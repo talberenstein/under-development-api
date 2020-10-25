@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Ticket.belongsTo(models.User, {foreignKey: 'userId'})
-      Ticket.belongsTo(models.Ticket_category)
+      Ticket.belongsTo(models.User, {foreignKey: 'id_user'})
+      Ticket.belongsTo(models.Ticket_category, {foreignKey: 'id_ticket_category'})
     }
   };
   Ticket.init({
@@ -22,8 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultVale: Sequelize.UUIDV4
     },
+    id_user: {
+      allowNull: false,
+      type: DataTypes.UUID,
+    },
     id_ticket_category: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     reported: {
