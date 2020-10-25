@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Ticket_category.hasMany(models.Ticket)
     }
   };
   Ticket_category.init({

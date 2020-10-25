@@ -2,10 +2,10 @@ require('dotenv').config()
 
 const dbDetails = {
   username: process.env.DB_USERNAME,
-  username: process.env.DB_PASSWORD,
-  username: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   host: process.env.DB_HOST,
-  username: process.env.DB_DIALECT,
+  dialect: process.env.DB_DIALECT,
 }
 
 module.exports = {

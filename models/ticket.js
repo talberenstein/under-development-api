@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Ticket.belongsTo(models.User, {foreignKey: 'userId'})
+      Ticket.belongsTo(models.Ticket_category)
     }
   };
   Ticket.init({
