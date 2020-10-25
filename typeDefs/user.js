@@ -15,4 +15,12 @@ module.exports = gql`
         ADMIN
         USER
     }
+
+    type Token {
+        token: String!
+    }
+
+    extend type Mutation {
+        signUp(username: String!, email: String!, password: String!): Token!
+    }
 `

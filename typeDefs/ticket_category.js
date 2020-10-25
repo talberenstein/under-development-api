@@ -5,7 +5,7 @@ module.exports = gql`
     type Ticket_category {
         id: ID!
         name: String!
-        description: Text!
+        description: String!
         createdAt: DateTime!
         updatedAt: DateTime!
     }

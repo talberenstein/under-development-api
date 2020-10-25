@@ -1,3 +1,4 @@
 const datetime = require('./dateTime')
+const user = require('./user')
 
-module.exports = [datetime]
+module.exports = [datetime, user]

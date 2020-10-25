@@ -8,7 +8,7 @@ module.exports = gql`
         id_ticket_category: ID!
         role: Role!
         reported: Boolean!
-        details: Text!
+        details: String!
         createdAt: DateTime!
         updatedAt: DateTime!
     }

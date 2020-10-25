@@ -1,6 +1,7 @@
 'use strict';
+
 const {
-  Model
+  Model, Sequelize
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Ticket extends Model {
@@ -20,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultVale: Sequelize.UUIDV4
+      defaultVale: DataTypes.UUIDV4
     },
     user_id: {
       allowNull: false,
