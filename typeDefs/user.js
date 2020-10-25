@@ -24,4 +24,8 @@ module.exports = gql`
         signUp(username: String!, email: String!, password: String!): Token!
         signIn(email: String!, password: String!): Token!
     }
+
+    extend type Query {
+        me:  User!
+    }
 `
