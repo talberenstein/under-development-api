@@ -8,7 +8,6 @@ module.exports = {
 
     Query: {
         me(parent, args, { models, authUser }) {
-            console.log(authUser)
             return models.User.findByPk(authUser.id)
         }
     },

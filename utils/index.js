@@ -11,7 +11,6 @@ const getAuthUser = req => {
     //Authorization Bearer tokensdjkfadsflksadfjaslöfkajdlö
     const tokenWithBearer = req.headers.authorization || ''
     const token = tokenWithBearer.split(' ')[1]
-    console.log(token)
 
     if( !token ){
         return null
