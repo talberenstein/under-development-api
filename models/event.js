@@ -1,12 +1,9 @@
-//Since I want to generate QR should I install a pkg, refering to its in the Model Ticket
-
 'use strict';
-
 const {
-  Model, Sequelize
+  Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Ticket extends Model {
+  class Event extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,50 +11,40 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Ticket.belongsTo(models.User, {foreignKey: 'userid'})
-      Ticket.belongsTo(models.Ticket_category, {foreignKey: 'id_ticket_category'})
     }
   };
-  Ticket.init({
+  Event.init({
     id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    userid: {
-      allowNull: false,
-      type: DataTypes.UUID,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    id_ticket_category: {
-      type: DataTypes.UUID,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: false,
+      defaultValue: 'NO DESCRIPTION'
     },
-    eventid:{
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    reported: {
+    canceled: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
     },
-    details: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      defaultValue: 'NO COMENTS'
-    },
     createdAt: {
+      type: DataTypes.DATE,
       allowNull: false,
-      type: DataTypes.DATE
     },
     updatedAt: {
+      type: DataTypes.DATE,
       allowNull: false,
-      type: DataTypes.DATE
     }
   }, {
     sequelize,
-    modelName: 'Ticket',
+    modelName: 'Event',
   });
-  return Ticket;
+  return Event;
 };

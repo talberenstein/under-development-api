@@ -35,7 +35,6 @@ module.exports = {
             }
 
             await ticket.update({ details, id_ticket_category, reported })
-
             return ticket
         }
     },

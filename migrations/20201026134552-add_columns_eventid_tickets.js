@@ -2,22 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-
     return Promise.all([
       queryInterface.addColumn(
         'Tickets', // table name
-        'TicketCategoryId', // new field name
+        'Eventid', // new field name
         {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-        },
-      ),
-      queryInterface.addColumn(
-        'Tickets',
-        'UserId',
-        {
-          type: Sequelize.INTEGER,
-          allowNull: true,
+          type: Sequelize.UUID,
+          allowNull: false,
         },
       ),
     ]);
