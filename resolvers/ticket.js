@@ -41,6 +41,16 @@ module.exports = {
             return ticket
         },
 
+        //DELETE TICKET
+        async deleteTicket(parent, { id }, {models, authUser}) {
+            const ticket = await models.Ticket.findByPk(id)
+
+            await ticket.destroy()
+            return true;
+
+            
+        },
+
         //MARK AS FAVORITE
         async markAsFavorite (parent, { id }, { models, authUser}) {
             const [favorite] = await models.Favorite.findOrCreate({
@@ -52,6 +62,14 @@ module.exports = {
 
             return favorite
 
+        },
+
+        //UNMARK AS FAVORITE
+        async unMarkAsFavorite (parent, { id }, {models, authUser}){
+            const favorite = await models.Favorite.findOne({where: { ticketId: id, userId: authUser.id}})
+
+            await favorite.destroy()
+            return true
         }
     },
 

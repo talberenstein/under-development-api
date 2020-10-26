@@ -17,7 +17,9 @@ module.exports = gql`
     extend type Mutation {
         createTicket(details: String, id_ticket_category: ID!, eventid: ID!): Ticket!
         updateTicket(id: ID!, details: String, id_ticket_category: ID!, reported: Boolean!, eventid: ID!): Ticket!
+        deleteTicket(id: ID!): Boolean!
         markAsFavorite(id: ID!): Favorite!
+        unMarkAsFavorite(id: ID!): Boolean!
     }
 
     extend type Query {
