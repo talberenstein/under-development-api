@@ -1,3 +1,5 @@
+//Since I want to generate QR should I install a pkg, refering to its in the Model Ticket
+
 'use strict';
 
 const {
@@ -21,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultVale: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4
     },
-    user_id: {
+    userid: {
       allowNull: false,
       type: DataTypes.UUID,
     },

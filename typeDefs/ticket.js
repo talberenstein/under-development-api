@@ -4,12 +4,15 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
     type Ticket {
         id: ID!
-        user_id: ID!
+        userid: ID!
         id_ticket_category: ID!
-        role: Role!
         reported: Boolean!
         details: String!
         createdAt: DateTime!
         updatedAt: DateTime!
+    }
+
+    extend type Mutation {
+        createTicket(id_ticket_category: ID!): Ticket!
     }
 `
