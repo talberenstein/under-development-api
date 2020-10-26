@@ -1,6 +1,6 @@
 //Since I want to generate QR should I install a pkg, refering to its in the Model Ticket
 
-const { ApolloError } = require("apollo-server-express")
+const { ApolloError, ForbiddenError } = require("apollo-server-express")
 
 module.exports = {
 
@@ -26,6 +26,17 @@ module.exports = {
                 ...args,
                 userid: authUser.id,
             })
+        },
+        async updateTicket (parent, { id, details, id_ticket_category, reported}, {models, authUser}){
+            const ticket = await models.Ticket.findByPk(id)
+            
+            if(authUser.id !== ticket.userid){
+                throw new ForbiddenError('You can only edit your own tickets')
+            }
+
+            await ticket.update({ details, id_ticket_category, reported })
+
+            return ticket
         }
     },
 
