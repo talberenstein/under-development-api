@@ -5,6 +5,7 @@ module.exports = gql`
     type Event {
         id: ID!
         name: String!
+        author: User!
         description: String!
         canceled: Boolean!
         createdAt: DateTime!
@@ -13,5 +14,9 @@ module.exports = gql`
 
     extend type Query {
         allEvents: [Event!]!
+    }
+
+    extend type Mutation {
+        createEvent(name: String!, description: String, canceled: Boolean): Event!
     }
 `
