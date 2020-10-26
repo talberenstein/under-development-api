@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Ticket.belongsTo(models.User, {foreignKey: 'userid'})
       Ticket.belongsTo(models.Ticket_category, {foreignKey: 'id_ticket_category'})
+      Ticket.belongsTo(models.Event, {foreignKey: 'Eventid'})
     }
   };
   Ticket.init({
