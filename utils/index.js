@@ -7,6 +7,7 @@ const generateToken = user => {
     )
 }
 
+//Split Bearer Token
 const getAuthUser = req => {
     //Authorization Bearer tokensdjkfadsflksadfjaslöfkajdlö
     const tokenWithBearer = req.headers.authorization || ''

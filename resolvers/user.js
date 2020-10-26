@@ -13,6 +13,8 @@ module.exports = {
     },
 
     Mutation: {
+
+        // SIGN UP. Token generate in utils/index.js
         async signUp(parent, {username, email, password}, { models}){
             const userExists = await models.User.findOne({ where: { email } })
 
@@ -25,6 +27,7 @@ module.exports = {
             return { token: generateToken(user) }
         },
 
+        // SIGN IN. Token generate in utils/index.js
         async signIn(parent, { email, password }, { models }) {
             const user = await models.User.findOne({ where: {email}})
 

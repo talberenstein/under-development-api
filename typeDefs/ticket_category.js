@@ -9,4 +9,8 @@ module.exports = gql`
         createdAt: DateTime!
         updatedAt: DateTime!
     }
+
+    extend type Query {
+        allTicketCategories: [Ticket_category!]!
+    }
 `
