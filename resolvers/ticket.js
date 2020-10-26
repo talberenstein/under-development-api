@@ -20,12 +20,16 @@ module.exports = {
         }
     },
     Mutation: {
+
+        //CREATE TICKET
         createTicket ( parent, args, { models, authUser }){
             return models.Ticket.create({
                 ...args,
                 userid: authUser.id,
             })
         },
+
+        //UPDATE TICKET
         async updateTicket (parent, { id, details, id_ticket_category, reported, eventid}, {models, authUser}){
             const ticket = await models.Ticket.findByPk(id)
             
@@ -35,11 +39,28 @@ module.exports = {
 
             await ticket.update({ details, id_ticket_category, reported, eventid })
             return ticket
+        },
+
+        //MARK AS FAVORITE
+        async markAsFavorite (parent, { id }, { models, authUser}) {
+            const [favorite] = await models.Favorite.findOrCreate({
+                where: {
+                    ticketId: id,
+                    userId: authUser.id
+                }
+            })
+
+            return favorite
+
         }
     },
 
+
     //get owner and category query ticket
     Ticket: {
+        favorite(ticket, args, {models}){
+            return models.Favorite.findAll({ where: { ticketId: ticket.id}})
+        },
         owner(ticket) {
             return ticket.getUser()
         },
@@ -48,7 +69,7 @@ module.exports = {
         },
         event(ticket){
             return ticket.getEvent()
-        }
+        },
 
     },
 }
