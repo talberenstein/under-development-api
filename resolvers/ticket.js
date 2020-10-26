@@ -6,7 +6,6 @@ module.exports = {
 
     Query: {
         async ticket(parent, { id }, { models } ) {
-            console.log(id)
             const ticket = await models.Ticket.findByPk(id)
 
             if(!ticket){
@@ -46,6 +45,9 @@ module.exports = {
         },
         ticket_category(ticket) {
             return ticket.getTicket_category()
+        },
+        event(ticket){
+            return ticket.getEvent()
         }
 
     },
