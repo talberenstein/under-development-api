@@ -36,12 +36,12 @@ module.exports = (sequelize, DataTypes) => {
     reported: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultVale: false
+      defaultValue: false
     },
     details: {
       type: DataTypes.TEXT,
       allowNull: false,
-      default: 'NO COMENTS'
+      defaultValue: 'NO COMENTS'
     },
     createdAt: {
       allowNull: false,

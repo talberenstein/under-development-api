@@ -4,8 +4,8 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
     type Ticket {
         id: ID!
-        userid: ID!
-        id_ticket_category: ID!
+        owner: User!
+        ticket_category: Ticket_category!
         reported: Boolean!
         details: String!
         createdAt: DateTime!
@@ -13,6 +13,11 @@ module.exports = gql`
     }
 
     extend type Mutation {
-        createTicket(id_ticket_category: ID!): Ticket!
+        createTicket(details: String, id_ticket_category: ID!): Ticket!
+    }
+
+    extend type Query {
+        ticket(id: ID!): Ticket!
+        allTickets: [Ticket!]!
     }
 `
