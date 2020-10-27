@@ -1,25 +1,43 @@
 const express = require('express')
-const { ApolloServer, gql } = require('apollo-server-express')
+const { ApolloServer, PubSub } = require('apollo-server-express')
 const models = require('./models')
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
 const { getAuthUser } = require('./utils')
+const http = require('http')
 
 const app = express()
 const port = 4000
+
+const pubsub = new PubSub()
 
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     playground: true,
-    context: ({ req }) => {
-        const authUser = getAuthUser(req) 
+    context: ({ req, connection }) => {
+        if(connection) {
+            return { models, pubsub };
+        } else {
+            const authUser = getAuthUser(req);
 
-        return { models, authUser }
+            return { models, authUser, pubsub }
+        }
     }
 })
 
 server.applyMiddleware({ app, cors: true})
 
-app.listen({port}, () => console.log(`Server ready at hhtp://localhost:${port}${server.graphqlPath}`))
+const httpServer = http.createServer(app)
+server.installSubscriptionHandlers(httpServer)
+
+httpServer.listen({port}, () => {
+    console.log(
+        `Server ready at hhtp://localhost:${port}${server.graphqlPath}`
+        );
+    console.log(
+        `Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`
+        );      
+}
+)

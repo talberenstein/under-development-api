@@ -6,7 +6,7 @@ module.exports = gql`
         id: ID!
         owner: User!
         ticket_category: Ticket_category!
-        event: Event!
+        event: Event
         favorite: [Favorite]
         reported: Boolean!
         details: String!
@@ -20,6 +20,12 @@ module.exports = gql`
         deleteTicket(id: ID!): Boolean!
         markAsFavorite(id: ID!): Favorite!
         unMarkAsFavorite(id: ID!): Boolean!
+    }
+
+    extend type Subscription{
+        ticketCreated: Ticket!
+        ticketFavorited: Favorite!
+        ticketUnfavorited: Favorite!
     }
 
     extend type Query {

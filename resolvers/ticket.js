@@ -1,6 +1,11 @@
 //Since I want to generate QR I should install a pkg, refering to its in the Model Ticket
 
 const { ApolloError, ForbiddenError } = require("apollo-server-express")
+const { Favorite } = require("./favorite")
+
+const TICKET_CREATED = "TICKET_CREADED";
+const TICKET_FAVORITED = "TICKET_FAVORITED";
+const TICKET_UNFAVORITED = "TICKET_UNFAVORITED";
 
 module.exports = {
 
@@ -22,11 +27,19 @@ module.exports = {
     Mutation: {
 
         //CREATE TICKET
-        createTicket ( parent, args, { models, authUser }){
-            return models.Ticket.create({
-                ...args,
+        async createTicket ( parent, { details, id_ticket_category, eventid }, { models, authUser, pubsub }){
+
+            const event = await models.Event.findByPk(eventid);
+            const ticket = await models.Ticket.create({
+                eventid,
+                details,
                 userid: authUser.id,
-            })
+                id_ticket_category
+            });
+
+            pubsub.publish(TICKET_CREATED, { ticketCreated: ticket})
+
+            return ticket
         },
 
         //UPDATE TICKET
@@ -52,7 +65,7 @@ module.exports = {
         },
 
         //MARK AS FAVORITE
-        async markAsFavorite (parent, { id }, { models, authUser}) {
+        async markAsFavorite (parent, { id }, { models, authUser, pubsub}) {
             const [favorite] = await models.Favorite.findOrCreate({
                 where: {
                     ticketId: id,
@@ -60,21 +73,43 @@ module.exports = {
                 }
             })
 
+            pubsub.publish(TICKET_FAVORITED, { ticketFavorited: favorite })
             return favorite
 
         },
 
         //UNMARK AS FAVORITE
-        async unMarkAsFavorite (parent, { id }, {models, authUser}){
+        async unMarkAsFavorite (parent, { id }, {models, authUser, pubsub}){
             const favorite = await models.Favorite.findOne({where: { ticketId: id, userId: authUser.id}})
 
             await favorite.destroy()
+
+            pubsub.publish(TICKET_UNFAVORITED, { ticketUnfavorited: favorite })
             return true
         }
     },
 
+    Subscription: {
+        ticketCreated: {
+            subscribe(parent, args, { pubsub }){
+                return pubsub.asyncIterator(TICKET_CREATED)
+            }
+        },
+        ticketFavorited: {
+            subscribe(parent, args, { pubsub }){
+                return pubsub.asyncIterator(TICKET_FAVORITED)
+            }
+        },
+        ticketUnfavorited: {
+            subscribe(parent, args, { pubsub }){
+                return pubsub.asyncIterator(TICKET_UNFAVORITED)
+            }
+        }
 
-    //get owner and category query ticket
+    },
+
+
+    //GETTERS FOR TICKETS!
     Ticket: {
         favorite(ticket, args, {models}){
             return models.Favorite.findAll({ where: { ticketId: ticket.id}})
@@ -86,6 +121,7 @@ module.exports = {
             return ticket.getTicket_category()
         },
         event(ticket){
+            console.log("TICKET: !!! " + ticket.getEvent())
             return ticket.getEvent()
         },
 

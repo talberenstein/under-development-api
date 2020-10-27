@@ -1,10 +1,10 @@
 module.exports = {
     Favorite: {
         user ( favorite, args, { models }){
-            console.log("FAVORITE!!!: "+favorite)
             return models.User.findByPk(favorite.userId)
         },
         ticket ( favorite, args, { models }){
+            console.log("TICKET!!! " + models.Ticket.findByPk(favorite.ticketId))
             return models.Ticket.findByPk(favorite.ticketId)
         }
     }
