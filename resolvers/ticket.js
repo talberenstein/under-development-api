@@ -92,9 +92,6 @@ module.exports = {
         async reportTicket( parent, { id }, {models, authUser}){
             const ticket = await models.Ticket.findByPk(id)
 
-            if(authUser.role !== 'ADMIN'){
-                throw new ForbiddenError('ADMIN REQUIRED')
-            }
             if(ticket.reported){
                 throw new ApolloError('TICKET ALREADY REPORTED')
             }
@@ -107,10 +104,6 @@ module.exports = {
         //UNREPORT TICKET
         async unReportTicket( parent, { id }, {models, authUser}){
             const ticket = await models.Ticket.findByPk(id)
-
-            if(authUser.role !== 'ADMIN'){
-                throw new ForbiddenError('ADMIN REQUIRED')
-            }
 
             if(!ticket.reported){
                 throw new ApolloError('Ticket not reported')
