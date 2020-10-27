@@ -20,8 +20,11 @@ module.exports = {
             return ticket
         },
 
-        async allTickets ( parent, { category } , {models} ) {
+        async allTickets ( parent, { category, reported } , {models} ) {
             const whereOptions = {}
+
+            whereOptions.reported = reported
+
             if(category){
 
                 this.category = await models.Ticket_category.findOne({
