@@ -7,6 +7,7 @@ module.exports = gql`
         username: String!
         email: String!
         role: Role!
+        tickets: [Ticket!]!
         avatar: String
         createdAt: DateTime!
         updatedAt: DateTime!
@@ -28,5 +29,6 @@ module.exports = gql`
 
     extend type Query {
         me:  User!
+        user(username: String!): User
     }
 `

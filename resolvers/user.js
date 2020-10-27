@@ -2,6 +2,7 @@ const { ApolloError, AuthenticationError } = require("apollo-server-express")
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { generateToken } = require('../utils')
+const user = require("../typeDefs/user")
 const cloudinary = require('cloudinary').v2
 
 
@@ -10,6 +11,17 @@ module.exports = {
     Query: {
         me(parent, args, { models, authUser }) {
             return models.User.findByPk(authUser.id)
+        },
+
+        async user(parent, { username }, { models}){
+            const user = await models.User.findOne({ where: { username } })
+
+            if(!user){
+                throw ApolloError("No user found")
+            }
+            
+            return user
+
         }
     },
 
@@ -74,6 +86,12 @@ module.exports = {
             } catch (error) {
                 throw new ApolloError('There was a problem uploading your avatar')
             }
+        }
+    },
+
+    User: {
+        tickets(user){
+            return user.getTickets()
         }
     }
 
