@@ -20,10 +20,26 @@ module.exports = {
             return ticket
         },
 
-        allTickets ( parent, args , {models} ) {
-            return models.Ticket.findAll()
+        async allTickets ( parent, { category } , {models} ) {
+            const whereOptions = {}
+            if(category){
+
+                this.category = await models.Ticket_category.findOne({
+                    where: { name: category}
+                
+                });
+
+                if(!this.category){
+                    throw new ApolloError("Category not found");
+                }
+
+                whereOptions.id_ticket_category = this.category.id;
+
+            }
+            return models.Ticket.findAll({ where: whereOptions })
         }
     },
+
     Mutation: {
 
         //CREATE TICKET
@@ -134,7 +150,6 @@ module.exports = {
 
     },
 
-
     //GETTERS FOR TICKETS!
     Ticket: {
         favorite(ticket, args, {models}){
@@ -147,7 +162,6 @@ module.exports = {
             return ticket.getTicket_category()
         },
         event(ticket){
-            console.log("TICKET: !!! " + ticket.getEvent())
             return ticket.getEvent()
         },
 

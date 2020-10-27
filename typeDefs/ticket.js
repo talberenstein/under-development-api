@@ -32,6 +32,6 @@ module.exports = gql`
 
     extend type Query {
         ticket(id: ID!): Ticket!
-        allTickets: [Ticket!]!
+        allTickets(category: String): [Ticket!]!
     }
 `
