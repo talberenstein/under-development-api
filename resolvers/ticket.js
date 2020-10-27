@@ -1,6 +1,6 @@
 //Since I want to generate QR I should install a pkg, refering to its in the Model Ticket
 
-const { ApolloError, ForbiddenError } = require("apollo-server-express")
+const { ApolloError, ForbiddenError, AuthenticationError } = require("apollo-server-express")
 const { Favorite } = require("./favorite")
 
 const TICKET_CREATED = "TICKET_CREADED";
@@ -86,7 +86,40 @@ module.exports = {
 
             pubsub.publish(TICKET_UNFAVORITED, { ticketUnfavorited: favorite })
             return true
+        },
+
+        //REPORT TICKET
+        async reportTicket( parent, { id }, {models, authUser}){
+            const ticket = await models.Ticket.findByPk(id)
+
+            if(authUser.role !== 'ADMIN'){
+                throw new ForbiddenError('ADMIN REQUIRED')
+            }
+            if(ticket.reported){
+                throw new ApolloError('TICKET ALREADY REPORTED')
+            }
+
+            await ticket.update( {reported: true} )
+            return true
+
+        },
+
+        //UNREPORT TICKET
+        async unReportTicket( parent, { id }, {models, authUser}){
+            const ticket = await models.Ticket.findByPk(id)
+
+            if(authUser.role !== 'ADMIN'){
+                throw new ForbiddenError('ADMIN REQUIRED')
+            }
+
+            if(!ticket.reported){
+                throw new ApolloError('Ticket not reported')
+            }
+
+            await ticket.update ( {reported: false} )
+            return true
         }
+
     },
 
     Subscription: {

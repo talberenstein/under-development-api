@@ -5,6 +5,8 @@ const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
 const { getAuthUser } = require('./utils')
 const http = require('http')
+const AuthDirective = require('./directives/auth')
+const { AdminDirective } = require('./directives')
 
 const app = express()
 const port = 4000
@@ -15,6 +17,10 @@ const pubsub = new PubSub()
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    schemaDirectives: {
+        auth: AuthDirective,
+        admin: AdminDirective
+    },
     playground: true,
     context: ({ req, connection }) => {
         if(connection) {

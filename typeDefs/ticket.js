@@ -15,11 +15,13 @@ module.exports = gql`
     }
 
     extend type Mutation {
-        createTicket(details: String, id_ticket_category: ID!, eventid: ID!): Ticket!
-        updateTicket(id: ID!, details: String, id_ticket_category: ID!, reported: Boolean!, eventid: ID!): Ticket!
-        deleteTicket(id: ID!): Boolean!
-        markAsFavorite(id: ID!): Favorite!
-        unMarkAsFavorite(id: ID!): Boolean!
+        createTicket(details: String, id_ticket_category: ID!, eventid: ID!): Ticket! @auth
+        updateTicket(id: ID!, details: String, id_ticket_category: ID!, reported: Boolean!, eventid: ID!): Ticket! @auth
+        deleteTicket(id: ID!): Boolean! @auth
+        markAsFavorite(id: ID!): Favorite! @auth
+        unMarkAsFavorite(id: ID!): Boolean! @auth
+        reportTicket(id: ID!): Boolean! @admin
+        unReportTicket(id: ID!): Boolean! @admin
     }
 
     extend type Subscription{

@@ -11,6 +11,6 @@ module.exports = gql`
     }
 
     extend type Query {
-        allTicketCategories: [Ticket_category!]!
+        allTicketCategories: [Ticket_category!]! @auth
     }
 `
