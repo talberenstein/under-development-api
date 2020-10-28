@@ -4,12 +4,12 @@ const models =  require('../models');
 
 const batchEvent = async (ids,  models ) => {
     console.log("ids:!!!" + ids)
-    const events = await models.Event.findAll({
+    const event = await models.Event.findAll({
         where: { id: { [models.Sequelize.Op.in]: ids } }
 
     })
 
-    return ids.map(id => events.find(event => event.id === id))
+    return ids.map(id => event.find(event => event.id === id))
 }
 
 

@@ -92,8 +92,14 @@ module.exports = {
     },
 
     User: {
-        async tickets(user, { perPage = 15, after }, { models}){
-            const whereOptions = {
+        async ticket(user, { perPage = 15, after }, { models, loaders}){
+
+
+            return loaders.ticket.load(user.id);
+
+            //PAGINATION WITHOUT DATALOADER
+
+            /*const whereOptions = {
                 userId: user.id
             }
 
@@ -117,7 +123,7 @@ module.exports = {
                     : null,
                     hasMore: rows.length ? count > rows.length : false,
                 }
-            }
+            }*/
         }
     }
 
