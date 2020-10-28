@@ -40,6 +40,10 @@ module.exports = {
 
             }
             return models.Ticket.findAll({ where: whereOptions })
+        },
+
+        allTicketsByMe (parent, args, { models, authUser }){
+            return models.Ticket.findAll({ where: {userid: authUser.id } })
         }
     },
 
