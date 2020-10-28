@@ -7,7 +7,7 @@ module.exports = gql`
         username: String!
         email: String!
         role: Role!
-        tickets(perPage: Int, page: Int): [Ticket!]!
+        tickets(perPage: Int, after: String): TicketConnection!
         avatar: String
         createdAt: DateTime!
         updatedAt: DateTime!
@@ -19,6 +19,16 @@ module.exports = gql`
 
     type Token {
         token: String!
+    }
+
+    type TicketConnection {
+        edges: [Ticket!]!
+        pageInfo: PageInfo!
+    }
+
+    type PageInfo {
+        endCursor: String,
+        hasMore: Boolean!
     }
 
     extend type Mutation {

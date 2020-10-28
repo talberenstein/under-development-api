@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const { generateToken } = require('../utils')
 const user = require("../typeDefs/user")
 const cloudinary = require('cloudinary').v2
+const { encodeCursor, decodeCursor } = require('../utils') 
+
 
 
 module.exports = {
@@ -17,7 +19,7 @@ module.exports = {
             const user = await models.User.findOne({ where: { username } })
 
             if(!user){
-                throw ApolloError("No user found")
+                throw new ApolloError("No user found")
             }
             
             return user
@@ -90,13 +92,32 @@ module.exports = {
     },
 
     User: {
-        tickets(user, { perPage = 15, page = 1}, { models }){
-            return models.Ticket.findAll({
-                where: {userid: user.id },
-                order: [["createdAt", "DESC"]],
-                limit: perPage, //0
-                offset: page === 1 ? 0 : perPage * (page - 1) //0 => 1-10, 10 => 11-20
+        async tickets(user, { perPage = 15, after }, { models}){
+            const whereOptions = {
+                userId: user.id
+            }
+
+            if(after){
+                whereOptions.createdAt = {
+                    [models.Sequelize.Op.gt]: decodeCursor(after)
+                }
+            }
+
+            const {rows, count} = await models.Ticket.findAndCountAll({
+                order: [["createdAt", "ASC"]],
+                limit: perPage,
+                where: whereOptions
             })
+
+            return {
+                edges: rows,
+                pageInfo: {
+                    endCursor: rows.length 
+                    ? encodeCursor(rows[rows.length -1].createdAt.toISOString())
+                    : null,
+                    hasMore: rows.length ? count > rows.length : false,
+                }
+            }
         }
     }
 
