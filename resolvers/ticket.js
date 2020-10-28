@@ -172,11 +172,13 @@ module.exports = {
         favorite(ticket, args, {models}){
             return models.Favorite.findAll({ where: { ticketId: ticket.id}})
         },
-        owner(ticket) {
-            return ticket.getUser()
+        owner(ticket, args, { loaders }) {
+            return loaders.user.load(ticket.userid)
+            //return ticket.getUser()
         },
-        ticket_category(ticket) {
-            return ticket.getTicket_category()
+        ticket_category(ticket, args, { loaders }) {
+            return loaders.ticket_category.load(ticket.id_ticket_category)
+            //return ticket.getTicket_category()
         },
         event(ticket){
             return ticket.getEvent()

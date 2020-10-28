@@ -7,6 +7,7 @@ const { getAuthUser } = require('./utils')
 const http = require('http')
 const AuthDirective = require('./directives/auth')
 const { AdminDirective } = require('./directives')
+const { userLoader, ticket_categoryLoader } = require('./loaders')
 
 const app = express()
 const port = 4000
@@ -28,7 +29,16 @@ const server = new ApolloServer({
         } else {
             const authUser = getAuthUser(req);
 
-            return { models, authUser, pubsub }
+            return { 
+                models, 
+                authUser, 
+                pubsub,
+                loaders: {
+                    user: userLoader(),
+                    ticket_category: ticket_categoryLoader()
+
+                }
+            };
         }
     }
 })
