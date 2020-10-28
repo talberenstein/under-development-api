@@ -7,7 +7,7 @@ module.exports = gql`
         username: String!
         email: String!
         role: Role!
-        tickets: [Ticket!]!
+        tickets(perPage: Int, page: Int): [Ticket!]!
         avatar: String
         createdAt: DateTime!
         updatedAt: DateTime!

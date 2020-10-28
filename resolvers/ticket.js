@@ -20,7 +20,7 @@ module.exports = {
             return ticket
         },
 
-        async allTickets ( parent, { category, reported } , {models} ) {
+        async allTickets ( parent, { category, reported = false, perPage = 15, page = 1 } , {models} ) {
             const whereOptions = {}
 
             whereOptions.reported = reported
@@ -39,11 +39,21 @@ module.exports = {
                 whereOptions.id_ticket_category = this.category.id;
 
             }
-            return models.Ticket.findAll({ where: whereOptions })
+            return models.Ticket.findAll({ 
+                where: whereOptions,
+                order: [["createdAt", "DESC"]],
+                limit: perPage, //0
+                offset: page === 1 ? 0 : perPage * (page - 1) //0 => 1-10, 10 => 11-20
+            })
         },
 
-        allTicketsByMe (parent, args, { models, authUser }){
-            return models.Ticket.findAll({ where: {userid: authUser.id } })
+        allTicketsByMe (parent, { perPage = 15, page = 1 }, { models, authUser }){
+            return models.Ticket.findAll({ 
+                where: {userid: authUser.id },
+                order: [["createdAt", "DESC"]],
+                limit: perPage, //0
+                offset: page === 1 ? 0 : perPage * (page - 1) //0 => 1-10, 10 => 11-20
+            });
         }
     },
 

@@ -32,7 +32,12 @@ module.exports = gql`
 
     extend type Query {
         ticket(id: ID!): Ticket!
-        allTickets(category: String, reported: Boolean): [Ticket!]!
-        allTicketsByMe: [Ticket!]! @auth
+        allTickets(
+            category: String, 
+            reported: Boolean, 
+            perPage: Int, 
+            page: Int
+            ): [Ticket!]! @auth
+        allTicketsByMe(perPage: Int, page: Int): [Ticket!]! @auth
     }
 `

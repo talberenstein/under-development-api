@@ -90,8 +90,13 @@ module.exports = {
     },
 
     User: {
-        tickets(user){
-            return user.getTickets()
+        tickets(user, { perPage = 15, page = 1}, { models }){
+            return models.Ticket.findAll({
+                where: {userid: user.id },
+                order: [["createdAt", "DESC"]],
+                limit: perPage, //0
+                offset: page === 1 ? 0 : perPage * (page - 1) //0 => 1-10, 10 => 11-20
+            })
         }
     }
 
