@@ -7,7 +7,7 @@ const { getAuthUser } = require('./utils')
 const http = require('http')
 const AuthDirective = require('./directives/auth')
 const { AdminDirective } = require('./directives')
-const { userLoader, ticket_categoryLoader } = require('./loaders')
+const { userLoader, ticket_categoryLoader, eventLoader } = require('./loaders')
 
 const app = express()
 const port = 4000
@@ -35,7 +35,8 @@ const server = new ApolloServer({
                 pubsub,
                 loaders: {
                     user: userLoader(),
-                    ticket_category: ticket_categoryLoader()
+                    ticket_category: ticket_categoryLoader(),
+                    event: eventLoader()
 
                 }
             };

@@ -174,14 +174,18 @@ module.exports = {
         },
         owner(ticket, args, { loaders }) {
             return loaders.user.load(ticket.userid)
+            //without DataLoader
             //return ticket.getUser()
         },
         ticket_category(ticket, args, { loaders }) {
             return loaders.ticket_category.load(ticket.id_ticket_category)
+            //Without DataLoader
             //return ticket.getTicket_category()
         },
-        event(ticket){
-            return ticket.getEvent()
+        event(ticket, args, { loaders }){
+            //console.log(ticket)
+            return loaders.event.load(ticket.eventid)
+            //return ticket.getEvent()
         },
 
     },

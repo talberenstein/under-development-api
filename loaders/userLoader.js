@@ -1,8 +1,14 @@
+
+//LOADERS HAVE TO BE DEFINED IN LOADERS(index), RESOLVERS AND INDEX.JS MAIN
+
+
+
+
 const DataLoader = require('dataloader');
 const models =  require('../models');
 
 
-const batchUserLoader = async (ids,  models ) => {
+const batchUser = async (ids,  models ) => {
     const user = await models.User.findAll({
         where: { id: { [models.Sequelize.Op.in]: ids } }
 
@@ -11,6 +17,6 @@ const batchUserLoader = async (ids,  models ) => {
     return ids.map(id => user.find(user => user.id === id))
 }
 
-const userLoader = () => new DataLoader(ids => batchUserLoader( ids, models ))
+const UserLoader = () => new DataLoader(ids => batchUser( ids, models ))
 
-module.exports = userLoader;
+module.exports = UserLoader;
